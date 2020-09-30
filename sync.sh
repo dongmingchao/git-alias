@@ -11,7 +11,7 @@ patch() {
 }
 
 setup() {
-  git config --global alias.sync '!bash $PWD/sync.sh'
+  git config --global alias.sync "!bash $PWD/sync.sh"
 }
 
 uninstall() {
@@ -30,6 +30,8 @@ case $1 in
   remote $@;;
   'patch')
   patch $@;;
+  'uninstall')
+  uninstall;;
 esac
 exit
 esac
