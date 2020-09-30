@@ -1,11 +1,27 @@
 remote() {
   echo 'sync with remote, remove all local & remote branch which is gone'
-  git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done
+  git fetch -p &&
+  local_branchs=$(git for-each-ref refs/heads --format='%(refname:short)') &&
+  remote_branchs=$(git branch -vr | awk '{print $1}')
+  len=${#array_name[@]}
+  for lb in $local_branchs
+  do
+    a=1
+    for rb in $remote_branchs
+    do
+      if [ "origin/$lb" == $rb ]
+      then
+        break
+        # echo 'delete '$branch" origin/$lb"
+      fi
+    done
+    # git branch -D $branch
+  done
 }
 
 patch() {
   echo 'pick branch changed area and append to current branch'
-  current_branch=$(git branch | awk  '$1 == "*"{print $2}')
+  current_branch=$(git branch | awk '$1 == "*"{print $2}')
   git rebase $current_branch $1
   git rebase $1 $current_branch
 }
